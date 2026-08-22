@@ -332,12 +332,13 @@
   }
   .race-cloud-row{
     display:flex;flex-wrap:nowrap;gap:16px;
-    overflow-x:auto;scroll-snap-type:x proximity;
+    overflow-x:auto;
     padding:8px 4px 20px;cursor:grab;
     scrollbar-width:none;-ms-overflow-style:none;
+    user-select:none;-webkit-user-select:none;
   }
   .race-cloud-row::-webkit-scrollbar{display:none;}
-  .race-cloud-row.dragging{cursor:grabbing;scroll-snap-type:none;}
+  .race-cloud-row.dragging{cursor:grabbing;}
   .race-progress-track{
     position:relative;max-width:320px;margin:4px auto 0;
     height:4px;border-radius:999px;background:rgba(255,255,255,0.1);overflow:hidden;
@@ -349,7 +350,6 @@
   }
   .race-cloud{
     display:inline-flex;align-items:center;gap:10px;flex-shrink:0;
-    scroll-snap-align:start;
     background:linear-gradient(135deg, rgba(138,28,255,0.28), rgba(255,46,196,0.2));
     border:1px solid rgba(255,255,255,0.28);
     box-shadow:0 0 18px rgba(138,28,255,0.25);
@@ -476,12 +476,12 @@
 
 <section class="hero" id="run">
   <video class="hero-video" autoplay muted loop playsinline poster="images/hero-poster4.jpg">
-    <source src="images/hero-run4.mp4" type="video/mp4">
+    <source src="images/video/hero-run4.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1 class="title">RUN. INSPIRE.<br>CONNECT.</h1>
-    <p class="tagline">My name is Diana Sparkles — a Philadelphia-based runner and creator who believes every finish line starts with one first step.</p>
+    <p class="tagline">My name is Diana Sparkles — a Philadelphia-based runner and creator who believes every finish line starts with one simple step.</p>
     <div class="hero-cta">
       <a href="#connect" class="btn btn-primary">Let's Run Together</a>
     </div>
@@ -498,7 +498,7 @@
     <div class="pin-stage-left">
       <div class="run-video-frame">
         <video autoplay muted loop playsinline poster="images/medal-run-poster.jpg">
-          <source src="images/medal-run.mp4" type="video/mp4">
+          <source src="images/video/medal-run.mp4" type="video/mp4">
         </video>
       </div>
       <div class="collage-photo c1"><img src="images/community-medals.jpg" alt="Run club friends huddled in a circle showing off their race medals"></div>
@@ -510,7 +510,7 @@
     </div>
     <div class="pin-copy-right">
       <div class="section-eyebrow">THE MISSION</div>
-      <h2>From First Step to Finish Lines</h2>
+      <h2>From Couch to the First 5K</h2>
       <p>My motivation is simple: help people take that first step, whatever it looks like for them. A first 5K, a first yoga class, a walk around the block. Fitness isn't about being fast or &ldquo;athletic.&rdquo; It's about showing up.</p>
       <p>From the couch to the finish line, one step at a time.</p>
     </div>
@@ -662,28 +662,29 @@
     var row = document.querySelector('.race-cloud-row');
     if (!row) return;
     var isDown = false, startX, scrollStart;
-    row.addEventListener('mousedown', function(e){
+    var autoPaused = false, autoResumeTimer, dir = 1;
+
+    row.addEventListener('pointerdown', function(e){
       isDown = true; row.classList.add('dragging');
-      startX = e.pageX; scrollStart = row.scrollLeft;
+      startX = e.clientX; scrollStart = row.scrollLeft;
       autoPaused = true;
+      clearTimeout(autoResumeTimer);
+      try { row.setPointerCapture(e.pointerId); } catch(err){}
     });
-    window.addEventListener('mouseup', function(){
-      isDown = false; row.classList.remove('dragging');
-      autoResumeTimer = setTimeout(function(){ autoPaused = false; }, 1500);
-    });
-    window.addEventListener('mousemove', function(e){
+    row.addEventListener('pointermove', function(e){
       if (!isDown) return;
       e.preventDefault();
-      row.scrollLeft = scrollStart - (e.pageX - startX);
+      row.scrollLeft = scrollStart - (e.clientX - startX);
     });
-
-    // slow automatic back-and-forth drift, pauses while the user is interacting
-    var autoPaused = false, autoResumeTimer, dir = 1;
-    row.addEventListener('touchstart', function(){ autoPaused = true; });
-    row.addEventListener('touchend', function(){
-      clearTimeout(autoResumeTimer);
+    function endDrag(){
+      if (!isDown) return;
+      isDown = false; row.classList.remove('dragging');
       autoResumeTimer = setTimeout(function(){ autoPaused = false; }, 1500);
-    });
+    }
+    row.addEventListener('pointerup', endDrag);
+    row.addEventListener('pointercancel', endDrag);
+    row.addEventListener('pointerleave', function(){ if (isDown) endDrag(); });
+
     row.addEventListener('wheel', function(){
       autoPaused = true;
       clearTimeout(autoResumeTimer);
@@ -703,7 +704,7 @@
       if (!autoPaused) {
         var max = row.scrollWidth - row.clientWidth;
         if (max > 0) {
-          row.scrollLeft += dir * 0.6;
+          row.scrollLeft += dir * 1.01;
           if (row.scrollLeft >= max - 1) dir = -1;
           if (row.scrollLeft <= 1) dir = 1;
         }
