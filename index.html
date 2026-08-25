@@ -306,9 +306,10 @@
   .mega-panel p{color:var(--text-dim);font-size:1.02rem;line-height:1.5;}
   .panel-chip-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
   .panel-chip-list li{
-    color:var(--text-dim);font-size:.92rem;font-weight:600;
-    background:rgba(255,255,255,0.07);border:1px solid var(--card-border);
+    color:#ffffff;font-size:.92rem;font-weight:700;
+    background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.32);
     border-radius:999px;padding:7px 16px;display:inline-block;width:fit-content;
+    text-shadow:0 1px 6px rgba(0,0,0,0.6);
   }
 
   /* ---- floating sparkles drifting over "My Running Family" ---- */
@@ -542,7 +543,7 @@
 
   <div class="mega-sectors">
     <div class="mega-col">
-      <h3 class="mega-col-title">Event Ambassador</h3>
+      <h3 class="mega-col-title">Team Sparkles</h3>
       <div class="mega-panel">
         <img src="images/ambassador-statue-group.jpg" alt="Diana Sparkles with a large run club group at the holiday run in front of the Washington Monument statue">
         <div class="mega-panel-overlay"></div>
@@ -551,18 +552,25 @@
             <li>Philadelphia Distance Run</li>
             <li>TIAA Philadelphia Marathon Weekend</li>
             <li>CoreFitness Philly</li>
+            <li>Ryze Mushroom Coffee</li>
           </ul>
         </div>
       </div>
     </div>
     <div class="mega-col">
-      <h3 class="mega-col-title">Brand Partnership</h3>
+      <h3 class="mega-col-title">Miles Behind Me</h3>
       <div class="mega-panel">
-        <img src="images/brand-1.jpg" alt="Diana Sparkles holding her race medal, smiling">
+        <img src="images/Medals.jpeg" alt="Diana Sparkles' race medal rack, showing medals from Spartan, Rocky Run, Philadelphia Marathon Weekend, Love Run Philly, Broad St, and Hyrox NYC">
         <div class="mega-panel-overlay"></div>
         <div class="mega-panel-content">
           <ul class="panel-chip-list">
-            <li>Ryze Mushroom Coffee</li>
+            <li>Spartan Super '24/'25</li>
+            <li>Philadelphia Half Marathon '25</li>
+            <li>Miami Full Marathon '26</li>
+            <li>Love Run Philly Half '26</li>
+            <li>Broad St '26</li>
+            <li>The Philly 10K '26</li>
+            <li>Hyrox NYC '26</li>
           </ul>
         </div>
       </div>
@@ -612,7 +620,7 @@
         </a>
       </div>
       <div class="contact-row">
-        <a href="mailto:sogdianaakmalova@icloud.com" class="btn btn-primary contact-btn contact-btn-email">
+        <a href="mailto:onesparkles1@gmail.com" class="btn btn-primary contact-btn contact-btn-email">
           Email Me
         </a>
         <a href="https://tiktok.com/@1sparkles" target="_blank" rel="noopener" class="btn btn-primary contact-btn contact-btn-social">
@@ -702,7 +710,7 @@
       if (!autoPaused) {
         var max = row.scrollWidth - row.clientWidth;
         if (max > 0) {
-          row.scrollLeft += dir * 1.01;
+          row.scrollLeft += dir * 0.91;
           if (row.scrollLeft >= max - 1) dir = -1;
           if (row.scrollLeft <= 1) dir = 1;
         }
